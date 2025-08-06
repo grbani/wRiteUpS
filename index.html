@@ -1,0 +1,29 @@
+---
+# This is called "Front Matter" and it tells Jekyll to process the file.
+# The layout key specifies which template to use from the _layouts directory.
+layout: default
+---
+
+<div class="home">
+
+  <h1 class="page-heading">Latest Writeups</h1>
+
+  <!-- This is where the magic happens. Jekyll will loop through all your posts
+       in the _posts folder and generate a list item for each one. -->
+  <ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <!-- Displays the post's date -->
+        <span class="post-meta">{{ post.date | date: "%b %d, %Y" }}</span>
+
+        <h2>
+          <!-- Creates a clickable link to the post with its title -->
+          <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
+
+</div>
