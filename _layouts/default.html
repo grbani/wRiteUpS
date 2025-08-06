@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- The head section contains metadata, links to stylesheets, and the site title. -->
+  <!-- We will create this as a separate, reusable file later (_includes/head.html). -->
+  <head>
+    <meta charset="utf-t">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ site.title | escape }}</title>
+    <meta name="description" content="{{ site.description | escape }}">
+    <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  </head>
+
+  <body>
+
+    <header class="site-header" role="banner">
+      <div class="wrapper">
+        <!-- This displays your site title and links it to the homepage. -->
+        <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+
+        <!-- This creates the navigation menu. -->
+        <nav class="site-nav">
+          <div class="trigger">
+            <!-- This links to your about page. -->
+            <a class="page-link" href="{{ '/about.html' | relative_url }}">About</a>
+            <!-- You can add more links here, e.g., for categories or contact. -->
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <!-- This is the most important part. Jekyll will inject the content
+             of your other pages (like index.html or a post) right here. -->
+        {{ content }}
+      </div>
+    </main>
+
+  </body>
+
+</html>
