@@ -1,0 +1,21 @@
+---
+# This layout uses the 'default' layout as its base.
+layout: default 
+---
+
+<article class="post">
+
+  <header class="post-header">
+    <!-- Displays the title of the post, which you'll set in the post's front matter. -->
+    <h1 class="post-title">{{ page.title | escape }}</h1>
+
+    <!-- Shows the publication date of the post. -->
+    <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}</p>
+  </header>
+
+  <div class="post-content">
+    <!-- This is where the main content of your Markdown writeup file will be rendered. -->
+    {{ content }}
+  </div>
+
+</article>
