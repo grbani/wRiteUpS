@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gurbani - CTF Writeups</title>
+    <title>Bani - CTF Writeups</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
     <!-- This library converts Markdown to HTML -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -128,7 +128,7 @@
     <div id="terminal">
         <div id="output"></div>
         <div class="input-line">
-            <span class="prompt">gurbani@ctf-blog:~$</span>
+            <span class="prompt">grbani@ctf-blog:~$</span>
             <input type="text" id="command-input" autofocus>
         </div>
     </div>
@@ -150,7 +150,7 @@
   <span class="command">banner</span>      -  Display the welcome banner and animation.
 </div>`,
             'whoami': `
-<span style="color: var(--yellow);">Gurbani</span>
+<span style="color: var(--yellow);">BANI</span>
 Cybersecurity enthusiast with a passion for Capture The Flag competitions.
 This is a collection of my writeups and notes.
 `,
@@ -169,7 +169,7 @@ Example: <span style="color: var(--cyan);">read get-ahead</span>
             'socials': `
 <div class="command-socials">
   <span class="social-platform">GitHub</span>      -  <a href="https://github.com/grbani" target="_blank">github.com/grbani</a>
-  <span class="social-platform">LinkedIn</span>    -  <a href="https://www.linkedin.com/in/gurbani-kaur-b93b3a257/" target="_blank">linkedin.com/in/gurbani-kaur</a>
+  <span class="social-platform">LinkedIn</span>    -  <a href="https://www.linkedin.com/in/grbani-kaur-b93b3a257/" target="_blank">linkedin.com/in/grbani-kaur</a>
 </div>
 `,
             'bannerText': `
@@ -237,7 +237,7 @@ Type <span style="color: var(--cyan);">'help'</span> to see a list of available 
                 const fullCommand = input.value.trim();
                 const [command, arg] = fullCommand.toLowerCase().split(/\s+/);
                 
-                appendContent(`\n<div class="input-line"><span class="prompt">gurbani@ctf-blog:~$</span><span>${fullCommand}</span></div>`);
+                appendContent(`\n<div class="input-line"><span class="prompt">grbani@ctf-blog:~$</span><span>${fullCommand}</span></div>`);
 
                 if (command === 'clear') {
                     output.innerHTML = '';
