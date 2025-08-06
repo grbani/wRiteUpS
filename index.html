@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - CTF Writeups</title>
+    <title>GRbani - CTF Writeups</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* Basic styles for the page */
@@ -108,7 +108,7 @@
     <div id="terminal">
         <div id="output"></div>
         <div class="input-line">
-            <span class="prompt">user@ctf-blog:~$</span>
+            <span class="prompt">grbani@ctf-blog:~$</span>
             <input type="text" id="command-input" autofocus>
         </div>
     </div>
@@ -131,37 +131,42 @@
 </div>`,
 
             'whoami': `
-<span style="color: var(--yellow);">[Your Name]</span>
+<span style="color: var(--yellow);">Bani</span>
 Cybersecurity enthusiast with a passion for Capture The Flag competitions.
-This blog is a collection of my writeups and notes.
+This is a collection of my writeups and notes.
 `,
 
             'projects': `
 <div class="command-projects">
-  <span class="project-title">Project 1: Web Challenge (Easy)</span> - <a href="#" target="_blank">Read Writeup</a>
-  Description: A simple challenge involving SQL injection.
+  <span class="project-title">picoCTF: GET aHEAD</span> - <a href="https://github.com/grbani/wRiteUpS/blob/main/wRiteUpS/Web%20Exploitation/picoCTF/GET%20aHEAD/GET%20aHEAD.md" target="_blank">Read Writeup</a>
+  Category: Web Exploitation
 
-  <span class="project-title">Project 2: Crypto Challenge (Medium)</span> - <a href="#" target="_blank">Read Writeup</a>
-  Description: Breaking a weak implementation of RSA.
+  <span class="project-title">picoCTF: Mod 26</span> - <a href="https://github.com/grbani/wRiteUpS/blob/main/wRiteUpS/Cryptography/picoCTF/Mod%2026/Mod%2026.md" target="_blank">Read Writeup</a>
+  Category: Cryptography
 
-  <span class="project-title">Project 3: Reverse Engineering (Hard)</span> - <a href="#" target="_blank">Read Writeup</a>
-  Description: Analyzing a packed malware sample.
+  <span class="project-title">picoCTF: Sleuthkit Intro</span> - <a href="https://github.com/grbani/wRiteUpS/blob/main/wRiteUpS/Forensics/picoCTF/Sleuthkit%20Intro/Sleuthkit%20Intro.md" target="_blank">Read Writeup</a>
+  Category: Forensics
+  
+  ... and many more. See the full repository for all writeups.
 </div>
 `,
 
             'socials': `
 <div class="command-socials">
-  <span class="social-platform">GitHub</span>      -  <a href="https://github.com/[your-username]" target="_blank">github.com/[your-username]</a>
-  <span class="social-platform">LinkedIn</span>    -  <a href="https://linkedin.com/in/[your-profile]" target="_blank">linkedin.com/in/[your-profile]</a>
-  <span class="social-platform">Twitter/X</span>   -  <a href="https://twitter.com/[your-handle]" target="_blank">twitter.com/[your-handle]</a>
+  <span class="social-platform">GitHub</span>      -  <a href="https://github.com/grbani" target="_blank">github.com/grbani</a>
+  <span class="social-platform">LinkedIn</span>    -  <a href="#" target="_blank">[Your LinkedIn Profile]</a>
+  <span class="social-platform">Twitter/X</span>   -  <a href="#" target="_blank">[Your Twitter Profile]</a>
 </div>
 `,
 
             'banner': `
 <pre style="color: var(--green);">
-  ____ _  _ ____ ____ _  _ ____    ____ ____ _  _ ____ 
-  |    |__| |___ |    |_/  |___    |    |  | |\\/| |___ 
-  |___ |  | |___ |___ | \\_ |___    |___ |__| |  | |___ 
+   ____    _    ____   ____    _    _   _ 
+  / __ \\  / \\  |  _ \\ | __ )  / \\  | \\ | |
+ | |  | |/ _ \\ | |_) ||  _ \\ / _ \\ |  \\| |
+ | |__| / ___ \\|  _ < | |_) / ___ \\| |\\  |
+  \\____/_/   \\_\\_| \\_\\|____/_/   \\_\\_| \\_|
+                                          
 </pre>
 Welcome to my interactive terminal!
 Type <span style="color: var(--cyan);">'help'</span> to see a list of available commands.
@@ -179,7 +184,7 @@ Type <span style="color: var(--cyan);">'help'</span> to see a list of available 
                 const command = input.value.trim().toLowerCase();
                 
                 // Display the command the user typed
-                output.innerHTML += `\n<div class="input-line"><span class="prompt">user@ctf-blog:~$</span><span>${command}</span></div>`;
+                output.innerHTML += `\n<div class="input-line"><span class="prompt">grbani@ctf-blog:~$</span><span>${command}</span></div>`;
 
                 if (command in commands) {
                     if (command === 'clear') {
