@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRbani - CTF Writeups</title>
+    <title>Gurbani - CTF Writeups</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <!-- This library converts Markdown to HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* Basic styles for the page */
         :root {
@@ -16,6 +18,7 @@
             --red: #f7768e;
             --blue: #7aa2f7;
             --magenta: #bb9af7;
+            --comment: #565f89;
         }
 
         body {
@@ -100,6 +103,23 @@
         .command-help .description { color: var(--foreground); }
         .command-projects .project-title { color: var(--yellow); }
         .command-socials .social-platform { color: var(--magenta); }
+        
+        /* Styling for the fetched writeup content */
+        .writeup-content {
+            border-left: 2px solid var(--comment);
+            padding-left: 1rem;
+            margin-top: 0.5rem;
+        }
+        .writeup-content h2 { color: var(--yellow); font-size: 1.1em; margin-top: 0; }
+        .writeup-content h3 { color: var(--blue); font-size: 1em; }
+        .writeup-content code { background-color: #24283b; padding: 0.2em 0.4em; border-radius: 4px; }
+        .writeup-content p { margin: 0.5em 0; }
+        .writeup-content img { max-width: 100%; border-radius: 4px; margin-top: 0.5em; }
+
+        /* Style for the animation container */
+        .animation-container {
+            color: var(--red); /* Changed to red for a more aggressive hacker look */
+        }
 
     </style>
 </head>
@@ -108,109 +128,154 @@
     <div id="terminal">
         <div id="output"></div>
         <div class="input-line">
-            <span class="prompt">grbani@ctf-blog:~$</span>
+            <span class="prompt">gurbani@ctf-blog:~$</span>
             <input type="text" id="command-input" autofocus>
         </div>
     </div>
 
     <script>
-        // Get references to the HTML elements
         const terminal = document.getElementById('terminal');
         const output = document.getElementById('output');
         const input = document.getElementById('command-input');
 
-        // Define the commands and their outputs
+        // --- COMMAND DEFINITIONS ---
         const commands = {
             'help': `
 <div class="command-help">
   <span class="command">whoami</span>      -  Who am I?
-  <span class="command">projects</span>    -  View my CTF writeups and projects.
+  <span class="command">projects</span>    -  List available writeups.
+  <span class="command">read [name]</span> -  Display a specific writeup (e.g., 'read get-ahead').
   <span class="command">socials</span>     -  Display my social media links.
   <span class="command">clear</span>       -  Clear the terminal screen.
-  <span class="command">banner</span>      -  Display the welcome banner.
+  <span class="command">banner</span>      -  Display the welcome banner and animation.
 </div>`,
-
             'whoami': `
-<span style="color: var(--yellow);">Bani</span>
+<span style="color: var(--yellow);">Gurbani</span>
 Cybersecurity enthusiast with a passion for Capture The Flag competitions.
 This is a collection of my writeups and notes.
 `,
-
             'projects': `
 <div class="command-projects">
-  <span class="project-title">picoCTF: GET aHEAD</span> - <a href="https://github.com/grbani/wRiteUpS/blob/main/wRiteUpS/Web%20Exploitation/picoCTF/GET%20aHEAD/GET%20aHEAD.md" target="_blank">Read Writeup</a>
-  Category: Web Exploitation
+Available writeups. Use the 'read' command to view one.
+Example: <span style="color: var(--cyan);">read get-ahead</span>
 
-  <span class="project-title">picoCTF: Mod 26</span> - <a href="https://github.com/grbani/wRiteUpS/blob/main/wRiteUpS/Cryptography/picoCTF/Mod%2026/Mod%2026.md" target="_blank">Read Writeup</a>
-  Category: Cryptography
+  <span class="project-title">get-ahead</span>        -  Category: Web Exploitation
+  <span class="project-title">mod-26</span>           -  Category: Cryptography
+  <span class="project-title">sleuthkit-intro</span>  -  Category: Forensics
 
-  <span class="project-title">picoCTF: Sleuthkit Intro</span> - <a href="https://github.com/grbani/wRiteUpS/blob/main/wRiteUpS/Forensics/picoCTF/Sleuthkit%20Intro/Sleuthkit%20Intro.md" target="_blank">Read Writeup</a>
-  Category: Forensics
-  
-  ... and many more. See the full repository for all writeups.
+... and many more to be added.
 </div>
 `,
-
             'socials': `
 <div class="command-socials">
   <span class="social-platform">GitHub</span>      -  <a href="https://github.com/grbani" target="_blank">github.com/grbani</a>
-  <span class="social-platform">LinkedIn</span>    -  <a href="#" target="_blank">[Your LinkedIn Profile]</a>
-  <span class="social-platform">Twitter/X</span>   -  <a href="#" target="_blank">[Your Twitter Profile]</a>
+  <span class="social-platform">LinkedIn</span>    -  <a href="https://www.linkedin.com/in/gurbani-kaur-b93b3a257/" target="_blank">linkedin.com/in/gurbani-kaur</a>
 </div>
 `,
-
-            'banner': `
-<pre style="color: var(--green);">
-   ____    _    ____   ____    _    _   _ 
-  / __ \\  / \\  |  _ \\ | __ )  / \\  | \\ | |
- | |  | |/ _ \\ | |_) ||  _ \\ / _ \\ |  \\| |
- | |__| / ___ \\|  _ < | |_) / ___ \\| |\\  |
-  \\____/_/   \\_\\_| \\_\\|____/_/   \\_\\_| \\_|
-                                          
-</pre>
+            'bannerText': `
 Welcome to my interactive terminal!
 Type <span style="color: var(--cyan);">'help'</span> to see a list of available commands.
 `
         };
 
-        // Function to display the banner on page load
-        function showBanner() {
-            output.innerHTML += commands.banner;
+        // --- HELPER FUNCTION TO SAFELY ADD CONTENT ---
+        function appendContent(htmlString) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlString;
+            while (tempDiv.firstChild) {
+                output.appendChild(tempDiv.firstChild);
+            }
         }
 
-        // Event listener for when the user presses a key
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const command = input.value.trim().toLowerCase();
-                
-                // Display the command the user typed
-                output.innerHTML += `\n<div class="input-line"><span class="prompt">grbani@ctf-blog:~$</span><span>${command}</span></div>`;
+        // --- SKULL ANIMATION FUNCTION ---
+        function runAnimation() {
+            const skullArt =[
+                              "       _____",
+                              "    .-'     '-.",
+                              "   /           \\",
+                              "  |  .--. .--.  |",
+                              "  | (    Y    ) |",
+  "  (  '--' '--'  )",
+  "   \\_        _/",
+  "     | || || |",
+  "    _| || || |_",
+  "   (___|_|_|___)",
+  "    /   | |   \\",
+  "   (_.__| |__._)",
+  "     /__|_|__\\"
+];
 
-                if (command in commands) {
-                    if (command === 'clear') {
-                        output.innerHTML = ''; // Clear the output
+
+            const animationContainer = document.createElement('pre');
+            animationContainer.className = 'animation-container';
+            output.appendChild(animationContainer);
+
+            let lineIndex = 0;
+
+            return new Promise(resolve => {
+                const interval = setInterval(() => {
+                    if (lineIndex < skullArt.length) {
+                        animationContainer.textContent += skullArt[lineIndex] + '\n';
+                        lineIndex++;
                     } else {
-                        output.innerHTML += commands[command];
+                        clearInterval(interval);
+                        resolve(); // Signal that the animation is complete
                     }
+                }, 100); // 100ms delay between each line
+            });
+        }
+
+        async function showBanner() {
+            await runAnimation(); // Wait for the animation to finish
+            appendContent(commands.bannerText); // Then add the text
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // --- MAIN COMMAND HANDLER ---
+        input.addEventListener('keydown', async function(e) {
+            if (e.key === 'Enter') {
+                const fullCommand = input.value.trim();
+                const [command, arg] = fullCommand.toLowerCase().split(/\s+/);
+                
+                appendContent(`\n<div class="input-line"><span class="prompt">gurbani@ctf-blog:~$</span><span>${fullCommand}</span></div>`);
+
+                if (command === 'clear') {
+                    output.innerHTML = '';
+                } else if (command === 'banner') {
+                    await showBanner();
+                } else if (command === 'read') {
+                    if (arg) {
+                        try {
+                            const response = await fetch(`writeups/${arg}.md`);
+                            if (response.ok) {
+                                const markdownText = await response.text();
+                                const htmlContent = marked.parse(markdownText);
+                                appendContent(`<div class="writeup-content">${htmlContent}</div>`);
+                            } else {
+                                throw new Error('Writeup not found');
+                            }
+                        } catch (error) {
+                            appendContent(`<span style="color: var(--red);">Error: Writeup '${arg}' not found. Type 'projects' to see a list.</span>`);
+                        }
+                    } else {
+                        appendContent(`<span style="color: var(--red);">Usage: read [project-name]</span>`);
+                    }
+                } else if (commands[command]) {
+                    appendContent(commands[command]);
                 } else if (command === '') {
-                    // Do nothing if the command is empty
+                    // Do nothing for empty command
                 } else {
-                    output.innerHTML += `<span style="color: var(--red);">Command not found: ${command}. Type 'help' for a list of commands.</span>`;
+                    appendContent(`<span style="color: var(--red);">Command not found: ${command}. Type 'help' for a list of commands.</span>`);
                 }
 
-                // Clear the input field for the next command
                 input.value = '';
-                // Scroll to the bottom of the terminal
                 terminal.scrollTop = terminal.scrollHeight;
             }
         });
 
-        // Focus the input field when the user clicks anywhere in the terminal
-        terminal.addEventListener('click', function() {
-            input.focus();
-        });
-
-        // Show the initial banner when the page loads
+        terminal.addEventListener('click', () => input.focus());
+        
+        // Initial load
         showBanner();
     </script>
 
